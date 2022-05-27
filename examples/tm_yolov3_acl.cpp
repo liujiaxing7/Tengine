@@ -429,6 +429,7 @@ int main(int argc, char* argv[])
     double min_time = DBL_MAX;
     double max_time = DBL_MIN;
     double total_time = 0.;
+    auto start_infer = std::chrono::steady_clock::now();
     for (int i = 0; i < repeat_count; i++)
     {
         double start = get_current_time();
@@ -443,6 +444,10 @@ int main(int argc, char* argv[])
         min_time = std::min(min_time, cur);
         max_time = std::max(max_time, cur);
     }
+    auto end_infer = std::chrono::steady_clock::now();
+    std::chrono::duration<double> elapsed_infer = end_infer - start_infer;
+    fprintf(
+        stderr, "infer: %.5f", elapsed_infer.count());
     fprintf(stderr, "Repeat %d times, thread %d, avg time %.2f ms, max_time %.2f ms, min_time %.2f ms\n", repeat_count, num_thread,
             total_time / repeat_count, max_time, min_time);
     fprintf(stderr, "--------------------------------------\n");
